@@ -40,7 +40,7 @@ class FundusDataset(torch.utils.data.Dataset):
             class_dir = os.path.join(root_dir, class_name)
             if not os.path.isdir(class_dir):
                 continue
-            for img_name in os.listdir(class_dir)[:200]:  # Limit to 200 images per class
+            for img_name in os.listdir(class_dir)[:1000]:  # Number of images to include!
                 self.samples.append((os.path.join(class_dir, img_name), self.class_to_idx[class_name]))
 
     def __len__(self):
