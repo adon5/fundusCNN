@@ -3,9 +3,11 @@ This trains a convolutional neural network from ResNet50 V2 weights with PyTorch
 There are 50 total layers (based on ResNet 50 architecture) and the final layer is modified to only have four classes.
 This uses cross-entropy loss as its loss function and the Adam optimiser.
 There should be four folders in the ./data folder as it expects 4 classes for classification.
+Training and test data are split 75-25.
 Random transformations are performed in each epoch to randomly transform the dataset.
 The learning rate remains constant, regardless of performance of the model across epochs.
 """
+# Double check and redo the preprocessing, the test and train transforms may not be implied as intended.
 
 import torch
 import torch.nn as nn
