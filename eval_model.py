@@ -20,7 +20,7 @@ output_classes = {0: "cataract", 1: "diabetic_retinopathy", 2: "glaucoma", 3: "n
 
 # Using the same transforms as training
 preprocess = transforms.Compose([
-    transforms.Resize((512, 512)),
+    transforms.Resize((512, 512)),  # change to 224, 224 if you train on latest version
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
