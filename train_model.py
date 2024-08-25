@@ -12,7 +12,7 @@ The learning rate remains constant, regardless of performance of the model acros
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, random_split, Subset
 from torchvision import datasets, transforms, models
 from torchvision.models import ResNet50_Weights
 
@@ -26,29 +26,28 @@ learning_rate = 0.001
 train_val_split = 0.75  # 75% training, 25% testing
 
 train_transform = transforms.Compose([
-    transforms.Resize((512, 512)),
+    transforms.Resize((224, 224)),
     transforms.RandomHorizontalFlip(),
-    transforms.RandomVerticalFlip(),
-    transforms.RandomRotation(20),
+    transforms.RandomRotation(10),
     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2),  # btwn 0.8 and 1
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # To match pre-trained
 ])
 
 test_transform = transforms.Compose([
-    transforms.Resize((512, 512)),
+    transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-dataset = datasets.ImageFolder(root=data_dir, transform=train_transform)
+full_dataset = datasets.ImageFolder(root=data_dir)
 
-train_size = int(train_val_split * len(dataset))
-test_size = len(dataset) - train_size
+train_size = int(train_val_split * len(full_dataset))
+test_size = len(full_dataset) - train_size
+train_dataset, test_dataset = random_split(full_dataset, [train_size, test_size])
 
-train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
-
-test_dataset.dataset.transform = test_transform  # This might be unnecessary since we already apply train_transform to the whole dataset. probably not as intended.
+train_dataset = Subset(datasets.ImageFolder(root=data_dir, transform=train_transform), train_dataset.indices)
+test_dataset = Subset(datasets.ImageFolder(root=data_dir, transform=test_transform), test_dataset.indices)
 
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
@@ -86,7 +85,7 @@ for epoch in range(num_epochs):
     train_accuracy = 100 * correct / total
     print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {running_loss/len(train_loader):.4f}, Train Accuracy: {train_accuracy:.2f}%')
 
-    # there is no distinct validation dataset, it uses the test dataset. Though this doesn't really matter as we don't do anything w/ this.
+    # there is no distinct validation dataset, it uses the test dataset.
     model.eval()
     correct = 0
     total = 0
