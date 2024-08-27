@@ -1,6 +1,7 @@
-# Use pip install torch==2.3.1 torchvision==0.18.1  --index-url https://download.pytorch.org/whl/cu121
-#torch~=2.3.1+cu121
-#torchvision~=0.18.1+cu121
+# Use pip install torch==2.3.1 torchvision==0.18.1  --index-url https://download.pytorch.org/whl/cu121 if torch installation not working (or equiv. conda)
+torch==2.3.1+cu121
+torchvision==0.18.1+cu121
+pillow==10.2.0
 seaborn~=0.13.2
 matplotlib~=3.9.2
 torchmetrics~=1.4.1

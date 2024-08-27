@@ -7,7 +7,6 @@ Training and test data are split 75-25.
 Random transformations are performed in each epoch to randomly transform the dataset.
 The learning rate remains constant, regardless of performance of the model across epochs.
 """
-# Double check and redo the preprocessing, the test and train transforms may not be implied as intended.
 
 import torch
 import torch.nn as nn
